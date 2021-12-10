@@ -1,0 +1,91 @@
+openapi: 3.0.1
+info:
+  title: API de consultório
+  description: API para controlar médicos e suas especialidades.
+  version: 0.0.1 # versão dessa api
+  termsOfService: https://mockapi.io # se a pessoa clicar, é redirecionada para esse link
+  contact:
+    name: Suporte a Devs
+    email: contato@example.com
+    url: https://mockapi.io # website
+  license: # licença da API
+    name: "Licença: GPLv3"
+    url: https://www.gnu.org/licenses/gpl-3.0.html
+externalDocs:
+  description: Documentação burocrática
+  url: https://mockapi.io 
+servers: # se apertar em get e ir no network (f12), ele procura a requisição get no path /especialidades e retorna o que achou. FAZ A REQUISIÇÃO DA API
+- url: https://61b37f4daf5ff70017ca1f8e.mockapi.io # endpoints
+# Para que o endpoint seja mostrado no Swagger UI, pelo menos uma operação deve ser definida, usando algum verbo (ou método) HTTP, como get, put, delete, post, patch, etc.
+  description: API de teste
+paths: # rotas
+  /especialidades:
+    get: # fazendo get em especialidades
+      summary: Recupera todas as especialidades # resumo do que o caminhho faz
+      responses: 
+        200: # CODIGO 200 É DE SUCESSO 
+          description: sucesso
+          content: # conteudo que eh devolvido caso dê sucesso
+            application/json: # devolvido em json
+              schema: # conteudo é um array de objetos
+                type: array
+                items:
+                  type: object
+                  properties: # propriedades que criei no meu mockapi
+                    id:
+                      type: integer
+                    name:
+                      type: string
+    post: 
+      summary: Cria nova especialidade # resumo do que o caminhho faz
+      description: "Através desse point você pode criar nessa especialidade"
+      requestBody:
+        content: # conteudo que eh devolvido caso dê sucesso
+            application/json: # devolvido em json
+              schema: # conteudo é um array de objetos
+                type: object
+                properties: # propriedades que criei no meu mockapi
+                  name:
+                    type: string
+      responses: 
+        201: # CODIGO 200 É DE SUCESSO 
+          description: "Criou uma especialidade"
+          content: # conteudo que eh devolvido caso dê sucesso
+            application/json: # devolvido em json
+              schema: # conteudo é um array de objetos
+                type: array
+                items:
+                  type: object
+                  properties: # propriedades que criei no meu mockapi
+                    id:
+                      type: integer
+                    name:
+                      type: string
+          
+  /especialidades/{id}: # se eu colocasse os parameters de fora do get, qualquer requisição (post, put, delete, etc) teria esses parametros como referencia
+    get:
+      summary: Recuperando entidade pelo ID
+      parameters: # parametros do path
+      - name: id
+        in: path # id estará no path
+        schema:
+          type: integer
+        required: true # precisa informar o id
+      responses:
+        200: 
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                  type: object # so traz info daquele id ent eh objeto
+                  properties: # propriedades que criei no meu mockapi
+                    id:
+                      type: integer
+                    name:
+                      type: string
+        404: # erro
+          description: especialidade nao encontrada # caso passe um id que nao existe
+          content:
+            application/json:
+              example: "Not Found"
+    
