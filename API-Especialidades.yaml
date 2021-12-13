@@ -30,12 +30,7 @@ paths: # rotas
               schema: # conteudo é um array de objetos
                 type: array
                 items:
-                  type: object
-                  properties: # propriedades que criei no meu mockapi
-                    id:
-                      type: integer
-                    name:
-                      type: string
+                  $ref: '#/components/schemas/especialidade' #reutilizando componente especialidade para nao ter que repetir type: object etc
     post: 
       summary: Cria nova especialidade # resumo do que o caminhho faz
       description: "Através desse point você pode criar nessa especialidade"
@@ -53,15 +48,7 @@ paths: # rotas
           content: # conteudo que eh devolvido caso dê sucesso
             application/json: # devolvido em json
               schema: # conteudo é um array de objetos
-                type: array
-                items:
-                  type: object
-                  properties: # propriedades que criei no meu mockapi
-                    id:
-                      type: integer
-                    name:
-                      type: string
-          
+                  $ref: '#/components/schemas/Especialidades' # referencia; hashtag fala que eh na raiz do documento
   /especialidades/{id}: # se eu colocasse os parameters de fora do get, qualquer requisição (post, put, delete, etc) teria esses parametros como referencia
     get:
       summary: Recuperando entidade pelo ID
@@ -72,20 +59,31 @@ paths: # rotas
           type: integer
         required: true # precisa informar o id
       responses:
-        200: 
-          description: Sucesso
-          content:
-            application/json:
-              schema:
-                  type: object # so traz info daquele id ent eh objeto
-                  properties: # propriedades que criei no meu mockapi
-                    id:
-                      type: integer
-                    name:
-                      type: string
+        200: # referencia ao 200 no components
+          $ref: '#/components/responses/200'
         404: # erro
           description: especialidade nao encontrada # caso passe um id que nao existe
           content:
             application/json:
               example: "Not Found"
-    
+components: # conjunto de objetos que serão reutilizado durante a API
+  schemas:
+    especialidade: 
+      type: object 
+      properties: 
+        id:
+          type: integer
+        name:
+          type: string
+    Especialidades:
+      type: array
+      items:
+        $ref: '#/components/schemas/especialidade' #referencia que faz referencia a outro tipo; Especialidades é um array de especialidade
+  responses:
+      200: 
+        description: Sucesso
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/especialidade'
+  
