@@ -31,6 +31,8 @@ paths: # rotas
                 type: array
                 items:
                   $ref: '#/components/schemas/especialidade' #reutilizando componente especialidade para nao ter que repetir type: object etc
+      security: # so conseguirei acessar get especialidades se eu tiver o token de autorização
+      - auth: [] #mesmo nome nos components
     post: 
       summary: Cria nova especialidade # resumo do que o caminhho faz
       description: "Através desse point você pode criar nessa especialidade"
@@ -86,4 +88,7 @@ components: # conjunto de objetos que serão reutilizado durante a API
           application/json:
             schema:
               $ref: '#/components/schemas/especialidade'
-  
+  securitySchemes: #tokens de autorização da api
+    auth:
+      type: http
+      scheme: bearer # como se fosse login
